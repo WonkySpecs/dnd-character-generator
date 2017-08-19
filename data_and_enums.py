@@ -19,6 +19,13 @@ class Races(Enum):
 	HALF_ORC	= "Half-orc"
 	TIEFLING	= "Tiefling"
 
+class Subraces(Enum):
+	HILL		= "Hill"
+	MOUTAIN		= "Mountain"
+	HIGH		= "High"
+	WOOD		= "Wood"
+	DARK		= "Dark"
+
 class Classes(Enum):
 	BARBARIAN	= "Barbarian"
 	BARD		= "Bard"
@@ -104,25 +111,70 @@ simple_ranged_weapons = { "Light crossbow",
 
 class_data_dict	= {	Classes.BARBARIAN:
 					{"hit_die"				: 12,
-					 "prim_att"					: Abilities.CON,
-	 				 "sec_att"					: Abilities.STR,
-					 "weapon_proficiencies" : {"all"}},
+					 "prim_att"				: Abilities.CON,
+	 				 "sec_att"				: Abilities.STR,
+					 "weapon_proficiencies" : { "all"},
+					 "armour_proficiencies" : { "light",
+					 							"medium",
+					 							"shields"},
+					 "saving throws"		: { Abilities.STR,
+											  	Abilities.CON}},
 	
 					Classes.BARD:
 					{"hit_die"				: 8,
-					 "prim_att"					: Abilities.CHA,
-	 				 "sec_att"					: Abilities.DEX,
+					 "prim_att"				: Abilities.CHA,
+	 				 "sec_att"				: Abilities.DEX,
 					 "weapon_proficiencies" : {"simple",
-					 							"hand crossbow",
+					 							"hand crossbows",
 					 							"longswords",
 					 							"rapiers",
-					 							"shortswords"}}}
+					 							"shortswords"},
+					 "armour_proficiencies" : { "light"},
+					 "saving throws"		: { Abilities.CHA,
+											  	Abilities.DEX}},
 
-race_data_dict	= {Races.DWARF:
-					{"languages"		: { "Common",
+					Classes.CLERIC:
+					{"hit_die"				: 8,
+					 "prim_att"				: Abilities.WIS,
+	 				 "sec_att"				: Abilities.CON,
+					 "weapon_proficiencies" : {"simple"},
+					 "armour_proficiencies" : { "light",
+					 							"medium",
+					 							"shields"},
+					 "saving throws"		: { Abilities.WIS,
+											  	Abilities.CHA}},
+					Classes.DRUID:
+					{"hit_die"				: 8,
+					 "prim_att"				: Abilities.WIS,
+	 				 "sec_att"				: Abilities.CON,
+					 "weapon_proficiencies" : { "club",
+												"daggers",
+												"darts",
+												"javelins",
+												"maces",
+												"quarterstaffs",
+												"scimitars",
+												"sickles",
+												"slings",
+												"spears"},
+					 "armour_proficiencies" : { "light",
+					 							"medium",
+					 							"shields"},
+					 "saving throws"		: { Abilities.INT,
+											  	Abilities.WIS}}}
+
+race_data_dict	= { Races.DWARF:
+					{"languages"			: { "Common",
 												"Dwarvish"},
-					 "speed"			: 25,
-					 ""					: 1,
-					 ""					: 1,
-					 ""					: 1,
-					 ""					: 1}}
+					 "speed"				: 25,
+					 "ability_increases"	: { Abilities.CON : 2},
+					 "subraces"				: { Subraces.HILL,
+					 							Subraces.MOUTAIN}},
+					Races.ELF:
+					{"languages"			: { "Common",
+												"Elvish"},
+					 "speed"				: 30,
+					 "ability_increases"	: { Abilities.DEX : 2},
+					 "subraces"				: { Subraces.WOOD,
+					 							Subraces.HIGH,
+					 							Subraces.DARK}}}

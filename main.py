@@ -12,6 +12,9 @@ def generateCharacter(races, classes, abilityScoreOrder = AbilityRollMethod.PICK
 
 	(strength, dexterity, constitution, intelligence, wisdom, charisma) = rollAbilityScores(abilityScoreOrder, abilityRollMethod, preference_order = pick_order)
 	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
+	subrace_choice = random.sample(race_data["subraces"], 1)[0]
+	print(ability_scores)
+	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
 	print(ability_scores)
 
 def rollAbilityScores(method, roll_method, preference_order = None):
@@ -49,6 +52,24 @@ def rollOneAbilityScore(method):
 		return random.randint(1, 20)
 	else:
 		print("Invalid method passed to rollOneAbilityScore")
+
+def applyAbilityIncreases(skill_list, increases):
+	for ability in increases:
+		amount = increases[ability]
+		if ability == Abilities.CON:
+			skill_list[0] += amount
+		elif ability == Abilities.STR:
+			skill_list[1] += amount
+		elif ability == Abilities.DEX:
+			skill_list[2] += amount
+		elif ability == Abilities.INT:
+			skill_list[3] += amount
+		elif ability == Abilities.WIS:
+			skill_list[4] += amount
+		elif ability == Abilities.CHA:
+			skill_list[5] += amount
+
+	return tuple(skill_list)
 
 def getPickOrder(method, class_data):
 	if method == "normal":
