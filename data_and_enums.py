@@ -21,7 +21,7 @@ class Races(Enum):
 
 class Subraces(Enum):
 	HILL		= "Hill"
-	MOUTAIN		= "Mountain"
+	MOUNTAIN	= "Mountain"
 	HIGH		= "High"
 	WOOD		= "Wood"
 	DARK		= "Dark"
@@ -169,7 +169,7 @@ race_data_dict	= { Races.DWARF:
 					 "speed"				: 25,
 					 "ability_increases"	: { Abilities.CON : 2},
 					 "subraces"				: { Subraces.HILL,
-					 							Subraces.MOUTAIN}},
+					 							Subraces.MOUNTAIN}},
 					Races.ELF:
 					{"languages"			: { "Common",
 												"Elvish"},
@@ -178,3 +178,19 @@ race_data_dict	= { Races.DWARF:
 					 "subraces"				: { Subraces.WOOD,
 					 							Subraces.HIGH,
 					 							Subraces.DARK}}}
+
+subrace_data_dict = { Subraces.HILL:
+						{"ability_increases"	: {Abilities.WIS : 1}
+						},
+
+					  Subraces.MOUNTAIN:
+					  	{"ability_increases"	: {Abilities.STR : 2}},
+
+					  Subraces.HIGH:
+					  	{"ability_increases"	: {Abilities.INT : 1}},
+
+					  Subraces.WOOD:
+					  	{"ability_increases"	: {Abilities.WIS : 1}},
+
+					  Subraces.DARK:
+					  	{"ability_increases"	: {Abilities.CHA : 1}}}

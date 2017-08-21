@@ -1,21 +1,26 @@
 import random
 from data_and_enums import *
 
-def generateCharacter(races, classes, abilityScoreOrder = AbilityRollMethod.PICK_ORDER, abilityRollMethod = AbilityRollMethod.FOUR_D6_DROP_LOWEST):
+def generateCharacter(races, classes, subraces, abilityScoreOrder = AbilityRollMethod.PICK_ORDER, abilityRollMethod = AbilityRollMethod.FOUR_D6_DROP_LOWEST):
 	race_choice = random.sample(races, 1)[0]
 	class_choice = random.sample(classes, 1)[0]
 
+	applicable_subraces = race_data_dict[race_choice]["subraces"]
+	sr = [subrace for subrace in applicable_subraces if subrace in subraces]
+	subrace_choice = random.sample(sr, 1)[0]
+
 	class_data = class_data_dict[class_choice]
 	race_data = race_data_dict[race_choice]
+	subrace_data = subrace_data_dict[subrace_choice]
 
 	pick_order = getPickOrder("normal", class_data)
 
 	(strength, dexterity, constitution, intelligence, wisdom, charisma) = rollAbilityScores(abilityScoreOrder, abilityRollMethod, preference_order = pick_order)
 	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
 	subrace_choice = random.sample(race_data["subraces"], 1)[0]
-	print(ability_scores)
 	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
-	print(ability_scores)
+	ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
+	outputCharacter(subrace_choice, race_choice, class_choice, ability_scores)
 
 def rollAbilityScores(method, roll_method, preference_order = None):
 	if method == AbilityRollMethod.IN_ORDER:
@@ -80,4 +85,15 @@ def getPickOrder(method, class_data):
 		random.shuffle(abilities)
 		return pick_order + abilities
 
-generateCharacter({Races.DWARF}, {Classes.BARBARIAN})
+def outputCharacter(subrace_choice, race_choice, class_choice, ability_scores):
+	print("{} {} {}".format(subrace_choice.value, race_choice.value, class_choice.value))
+	print("{}: {}".format(Abilities.STR.value, ability_scores[0]))
+	print("{}: {}".format(Abilities.DEX.value, ability_scores[1]))
+	print("{}: {}".format(Abilities.CON.value, ability_scores[2]))
+	print("{}: {}".format(Abilities.INT.value, ability_scores[3]))
+	print("{}: {}".format(Abilities.WIS.value, ability_scores[4]))
+	print("{}: {}".format(Abilities.CHA.value, ability_scores[5]))
+
+generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, {Subraces.HILL, Subraces.MOUNTAIN})
+print("---------------------------------")
+generateCharacter({Races.ELF}, {Classes.BARD}, {Subraces.DARK, Subraces.HIGH, Subraces.WOOD})
