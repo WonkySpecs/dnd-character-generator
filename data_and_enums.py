@@ -45,7 +45,7 @@ class Abilities(Enum):
 	DEX = "Dexterity"
 	CON = "Constitution"
 	INT = "Intelligence"
-	WIS = "Wisdow"
+	WIS = "Wisdom"
 	CHA = "Charisma"
 
 class Skills(Enum):

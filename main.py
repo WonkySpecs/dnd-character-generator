@@ -17,7 +17,6 @@ def generateCharacter(races, classes, subraces, abilityScoreOrder = AbilityRollM
 
 	(strength, dexterity, constitution, intelligence, wisdom, charisma) = rollAbilityScores(abilityScoreOrder, abilityRollMethod, preference_order = pick_order)
 	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
-	subrace_choice = random.sample(race_data["subraces"], 1)[0]
 	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
 	ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
 	outputCharacter(subrace_choice, race_choice, class_choice, ability_scores)
@@ -37,6 +36,7 @@ def rollAbilityScores(method, roll_method, preference_order = None):
 			intelligence = rolls[preference_order.index(Abilities.INT)]
 			wisdom = rolls[preference_order.index(Abilities.WIS)]
 			charisma = rolls[preference_order.index(Abilities.CHA)]
+			
 			return (strength, dexterity, constitution, intelligence, wisdom, charisma)
 		else:
 			#If no order given, act like IN_ORDER
@@ -61,11 +61,11 @@ def rollOneAbilityScore(method):
 def applyAbilityIncreases(skill_list, increases):
 	for ability in increases:
 		amount = increases[ability]
-		if ability == Abilities.CON:
+		if ability == Abilities.STR:
 			skill_list[0] += amount
-		elif ability == Abilities.STR:
-			skill_list[1] += amount
 		elif ability == Abilities.DEX:
+			skill_list[1] += amount
+		elif ability == Abilities.CON:
 			skill_list[2] += amount
 		elif ability == Abilities.INT:
 			skill_list[3] += amount
