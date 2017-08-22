@@ -1,7 +1,10 @@
 import random
 from data_and_enums import *
 
-def generateCharacter(races, classes, subraces = "all", abilityScoreOrder = AbilityRollMethod.PICK_ORDER, abilityRollMethod = AbilityRollMethod.FOUR_D6_DROP_LOWEST):
+def generateCharacter(races, classes, subraces = "all",
+						abilityScoreOrderMethod = AbilityRollMethod.PICK_ORDER,
+						abilityRollMethod = AbilityRollMethod.FOUR_D6_DROP_LOWEST,
+						abilityScoreOrder = "classic"):
 	race_choice = random.sample(races, 1)[0]
 	class_choice = random.sample(classes, 1)[0]
 
@@ -16,9 +19,9 @@ def generateCharacter(races, classes, subraces = "all", abilityScoreOrder = Abil
 	race_data = race_data_dict[race_choice]
 	subrace_data = subrace_data_dict[subrace_choice]
 
-	pick_order = getPickOrder("normal", class_data)
+	pick_order = getPickOrder(abilityScoreOrder, class_data)
 
-	(strength, dexterity, constitution, intelligence, wisdom, charisma) = rollAbilityScores(abilityScoreOrder, abilityRollMethod, preference_order = pick_order)
+	(strength, dexterity, constitution, intelligence, wisdom, charisma) = rollAbilityScores(abilityScoreOrderMethod, abilityRollMethod, preference_order = pick_order)
 	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
 	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
 	ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
@@ -66,6 +69,10 @@ def rollOneAbilityScore(method):
 def calculateModifier(score):
 	return (score - 10)//2
 
+# Takes list of ints in order of
+# str, dex, con, int, wis, cha
+# and a dict of {Abilities : int} and applies
+# the increases to the appropriate ability
 def applyAbilityIncreases(ability_list, increases):
 	for ability in increases:
 		amount = increases[ability]
@@ -84,14 +91,26 @@ def applyAbilityIncreases(ability_list, increases):
 
 	return tuple(ability_list)
 
+# Takes either:
+#	1. A strong defining the method for generating or
+#	2. A list of up to 6 Abilities
+# and outputs a list defining the preference for ability
+# scores, most preffered first.
 def getPickOrder(method, class_data):
-	if method == "normal":
+	if method == "classic":
 		pick_order = [class_data["prim_att"], class_data["sec_att"]]
-		abilities = [a for a in Abilities]
-		abilities.remove(class_data["prim_att"])
-		abilities.remove(class_data["sec_att"])
-		random.shuffle(abilities)
-		return pick_order + abilities
+	elif method == "random":
+		pick_order = [a for a in Abilities]
+		pick_order.shuffle()
+		return pick_order
+	else:
+		pick_order = method
+
+	abilities = [a for a in Abilities]
+	for ability in pick_order:
+		abilities.remove(ability)
+	random.shuffle(abilities)
+	return pick_order + abilities
 
 def outputCharacter(subrace_choice, race_choice, class_choice, race_data, ability_scores):
 	print("{} {} {}".format(subrace_choice.value, race_choice.value, class_choice.value))
@@ -102,6 +121,19 @@ def outputCharacter(subrace_choice, race_choice, class_choice, race_data, abilit
 	print("{}: \t{} ({})".format(Abilities.WIS.value, ability_scores[4], calculateModifier(ability_scores[4])))
 	print("{}: \t{} ({})".format(Abilities.CHA.value, ability_scores[5], calculateModifier(ability_scores[5])))
 	print("Speed: {}".format(race_data["speed"]))
+
+def runTests():
+	assert(calculateModifier(1) == -5)
+	assert(calculateModifier(3) == -4)
+	assert(calculateModifier(10) == 0)
+	assert(calculateModifier(30) == 10)
+	for i in range(100):
+		assert(rollOneAbilityScore(AbilityRollMethod.FOUR_D6_DROP_LOWEST) in range(3, 18))
+		assert(rollOneAbilityScore(AbilityRollMethod.THREE_D6) in range(3, 18))
+		assert(rollOneAbilityScore(AbilityRollMethod.D20) in range(1, 20))
+	po = getPickOrder("random", None)
+	for ability in Abilities:
+		assert(ability in po)
 
 generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, abilityRollMethod = AbilityRollMethod.STANDARD_ARRAY)
 print("---------------------------------")
