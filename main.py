@@ -1,13 +1,16 @@
 import random
 from data_and_enums import *
 
-def generateCharacter(races, classes, subraces, abilityScoreOrder = AbilityRollMethod.PICK_ORDER, abilityRollMethod = AbilityRollMethod.FOUR_D6_DROP_LOWEST):
+def generateCharacter(races, classes, subraces = "all", abilityScoreOrder = AbilityRollMethod.PICK_ORDER, abilityRollMethod = AbilityRollMethod.FOUR_D6_DROP_LOWEST):
 	race_choice = random.sample(races, 1)[0]
 	class_choice = random.sample(classes, 1)[0]
 
-	applicable_subraces = race_data_dict[race_choice]["subraces"]
-	sr = [subrace for subrace in applicable_subraces if subrace in subraces]
-	subrace_choice = random.sample(sr, 1)[0]
+	if(subraces == "all"):
+		subrace_choice = random.sample(race_data_dict[race_choice]["subraces"], 1)[0]
+	else:
+		applicable_subraces = race_data_dict[race_choice]["subraces"]
+		sr = [subrace for subrace in applicable_subraces if subrace in subraces]
+		subrace_choice = random.sample(sr, 1)[0]	
 
 	class_data = class_data_dict[class_choice]
 	race_data = race_data_dict[race_choice]
@@ -19,15 +22,17 @@ def generateCharacter(races, classes, subraces, abilityScoreOrder = AbilityRollM
 	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
 	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
 	ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
-	outputCharacter(subrace_choice, race_choice, class_choice, ability_scores)
+	outputCharacter(subrace_choice, race_choice, class_choice, race_data, ability_scores)
 
 def rollAbilityScores(method, roll_method, preference_order = None):
 	if method == AbilityRollMethod.IN_ORDER:
 		return tuple([rollOneAbilityScore(roll_method) for i in range(6)])
-
 	elif method == AbilityRollMethod.PICK_ORDER:
 		if preference_order:
-			rolls = [rollOneAbilityScore(roll_method) for i in range(6)]
+			if roll_method == AbilityRollMethod.STANDARD_ARRAY:
+				rolls = [15, 14, 13, 12, 10, 8]
+			else:
+				rolls = [rollOneAbilityScore(roll_method) for i in range(6)]
 			rolls.sort()
 			rolls.reverse()
 			strength = rolls[preference_order.index(Abilities.STR)]
@@ -36,7 +41,7 @@ def rollAbilityScores(method, roll_method, preference_order = None):
 			intelligence = rolls[preference_order.index(Abilities.INT)]
 			wisdom = rolls[preference_order.index(Abilities.WIS)]
 			charisma = rolls[preference_order.index(Abilities.CHA)]
-			
+
 			return (strength, dexterity, constitution, intelligence, wisdom, charisma)
 		else:
 			#If no order given, act like IN_ORDER
@@ -58,23 +63,26 @@ def rollOneAbilityScore(method):
 	else:
 		print("Invalid method passed to rollOneAbilityScore")
 
-def applyAbilityIncreases(skill_list, increases):
+def calculateModifier(score):
+	return (score - 10)//2
+
+def applyAbilityIncreases(ability_list, increases):
 	for ability in increases:
 		amount = increases[ability]
 		if ability == Abilities.STR:
-			skill_list[0] += amount
+			ability_list[0] += amount
 		elif ability == Abilities.DEX:
-			skill_list[1] += amount
+			ability_list[1] += amount
 		elif ability == Abilities.CON:
-			skill_list[2] += amount
+			ability_list[2] += amount
 		elif ability == Abilities.INT:
-			skill_list[3] += amount
+			ability_list[3] += amount
 		elif ability == Abilities.WIS:
-			skill_list[4] += amount
+			ability_list[4] += amount
 		elif ability == Abilities.CHA:
-			skill_list[5] += amount
+			ability_list[5] += amount
 
-	return tuple(skill_list)
+	return tuple(ability_list)
 
 def getPickOrder(method, class_data):
 	if method == "normal":
@@ -85,15 +93,16 @@ def getPickOrder(method, class_data):
 		random.shuffle(abilities)
 		return pick_order + abilities
 
-def outputCharacter(subrace_choice, race_choice, class_choice, ability_scores):
+def outputCharacter(subrace_choice, race_choice, class_choice, race_data, ability_scores):
 	print("{} {} {}".format(subrace_choice.value, race_choice.value, class_choice.value))
-	print("{}: {}".format(Abilities.STR.value, ability_scores[0]))
-	print("{}: {}".format(Abilities.DEX.value, ability_scores[1]))
-	print("{}: {}".format(Abilities.CON.value, ability_scores[2]))
-	print("{}: {}".format(Abilities.INT.value, ability_scores[3]))
-	print("{}: {}".format(Abilities.WIS.value, ability_scores[4]))
-	print("{}: {}".format(Abilities.CHA.value, ability_scores[5]))
+	print("{}: \t{} ({})".format(Abilities.STR.value, ability_scores[0], calculateModifier(ability_scores[0])))
+	print("{}: \t{} ({})".format(Abilities.DEX.value, ability_scores[1], calculateModifier(ability_scores[1])))
+	print("{}: \t{} ({})".format(Abilities.CON.value, ability_scores[2], calculateModifier(ability_scores[2])))
+	print("{}: \t{} ({})".format(Abilities.INT.value, ability_scores[3], calculateModifier(ability_scores[3])))
+	print("{}: \t{} ({})".format(Abilities.WIS.value, ability_scores[4], calculateModifier(ability_scores[4])))
+	print("{}: \t{} ({})".format(Abilities.CHA.value, ability_scores[5], calculateModifier(ability_scores[5])))
+	print("Speed: {}".format(race_data["speed"]))
 
-generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, {Subraces.HILL, Subraces.MOUNTAIN})
+generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, abilityRollMethod = AbilityRollMethod.STANDARD_ARRAY)
 print("---------------------------------")
-generateCharacter({Races.ELF}, {Classes.BARD}, {Subraces.DARK, Subraces.HIGH, Subraces.WOOD})
+generateCharacter({Races.ELF}, {Classes.BARD}, {Subraces.DARK, Subraces.HIGH})

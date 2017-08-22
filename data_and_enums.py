@@ -4,6 +4,8 @@ class AbilityRollMethod(Enum):
 	FOUR_D6_DROP_LOWEST = "4d6 drop lowest"
 	THREE_D6			= "3d6"
 	D20 				= "d20 (Warning: Mad)"
+	
+	STANDARD_ARRAY		= "Standard Array"
 
 	IN_ORDER 			= "In order"
 	PICK_ORDER			= "Pick order"
