@@ -25,7 +25,7 @@ def generateCharacter(races, classes, subraces = "all",
 	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
 	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
 	ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
-	outputCharacter(subrace_choice, race_choice, class_choice, race_data, ability_scores)
+	outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores)
 
 def rollAbilityScores(method, roll_method, preference_order = None):
 	if method == AbilityRollMethod.IN_ORDER:
@@ -112,15 +112,40 @@ def getPickOrder(method, class_data):
 	random.shuffle(abilities)
 	return pick_order + abilities
 
-def outputCharacter(subrace_choice, race_choice, class_choice, race_data, ability_scores):
+def outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores):
 	print("{} {} {}".format(subrace_choice.value, race_choice.value, class_choice.value))
+	outputLineBreak()
 	print("{}: \t{} ({})".format(Abilities.STR.value, ability_scores[0], calculateModifier(ability_scores[0])))
 	print("{}: \t{} ({})".format(Abilities.DEX.value, ability_scores[1], calculateModifier(ability_scores[1])))
 	print("{}: \t{} ({})".format(Abilities.CON.value, ability_scores[2], calculateModifier(ability_scores[2])))
 	print("{}: \t{} ({})".format(Abilities.INT.value, ability_scores[3], calculateModifier(ability_scores[3])))
 	print("{}: \t{} ({})".format(Abilities.WIS.value, ability_scores[4], calculateModifier(ability_scores[4])))
 	print("{}: \t{} ({})".format(Abilities.CHA.value, ability_scores[5], calculateModifier(ability_scores[5])))
-	print("Speed: {}".format(race_data["speed"]))
+	print("HP: \t\t{}".format(class_data["hit_die"] + calculateModifier(ability_scores[2])))
+	print()
+	print("Speed: \t\t{}".format(race_data["speed"]))
+	print("Languages:")
+	print(listToTabbedString(race_data["languages"], 2))
+	print("Proficiencies")
+	outputLineBreak()
+	print("Saving throws:")
+	print(listToTabbedString([a.value for a in class_data["saving_throws"]], 2))
+	print("Weapons:")
+	print(listToTabbedString(class_data["weapon_proficiencies"], 2))
+	print("Armour:")
+	print(listToTabbedString(class_data["armour_proficiencies"], 2))
+
+def listToTabbedString(l, numTabs):
+	s = ""
+	for entry in l:
+		for i in range(numTabs):
+			s += "\t"
+		s += entry
+		s += "\n"
+	return s
+
+def outputLineBreak():
+	print("----------------")
 
 def runTests():
 	assert(calculateModifier(1) == -5)
@@ -136,5 +161,6 @@ def runTests():
 		assert(ability in po)
 
 generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, abilityRollMethod = AbilityRollMethod.STANDARD_ARRAY)
-print("---------------------------------")
+outputLineBreak()
+outputLineBreak()
 generateCharacter({Races.ELF}, {Classes.BARD}, {Subraces.DARK, Subraces.HIGH})

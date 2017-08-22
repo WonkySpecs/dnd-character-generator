@@ -4,7 +4,7 @@ class AbilityRollMethod(Enum):
 	FOUR_D6_DROP_LOWEST = "4d6 drop lowest"
 	THREE_D6			= "3d6"
 	D20 				= "d20 (Warning: Mad)"
-	
+
 	STANDARD_ARRAY		= "Standard Array"
 
 	IN_ORDER 			= "In order"
@@ -119,7 +119,7 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 "armour_proficiencies" : { "light",
 					 							"medium",
 					 							"shields"},
-					 "saving throws"		: { Abilities.STR,
+					 "saving_throws"		: { Abilities.STR,
 											  	Abilities.CON}},
 	
 					Classes.BARD:
@@ -132,7 +132,7 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 							"rapiers",
 					 							"shortswords"},
 					 "armour_proficiencies" : { "light"},
-					 "saving throws"		: { Abilities.CHA,
+					 "saving_throws"		: { Abilities.CHA,
 											  	Abilities.DEX}},
 
 					Classes.CLERIC:
@@ -143,7 +143,7 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 "armour_proficiencies" : { "light",
 					 							"medium",
 					 							"shields"},
-					 "saving throws"		: { Abilities.WIS,
+					 "saving_throws"		: { Abilities.WIS,
 											  	Abilities.CHA}},
 					Classes.DRUID:
 					{"hit_die"				: 8,
@@ -162,7 +162,7 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 "armour_proficiencies" : { "light",
 					 							"medium",
 					 							"shields"},
-					 "saving throws"		: { Abilities.INT,
+					 "saving_throws"		: { Abilities.INT,
 											  	Abilities.WIS}}}
 
 race_data_dict	= { Races.DWARF:
