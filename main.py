@@ -25,7 +25,8 @@ def generateCharacter(races, classes, subraces = "all",
 	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
 	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
 	ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
-	outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores)
+	skills = random.sample(class_data["skills"], class_data["num_skills"])
+	outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores, skills)
 
 def rollAbilityScores(method, roll_method, preference_order = None):
 	if method == AbilityRollMethod.IN_ORDER:
@@ -112,7 +113,7 @@ def getPickOrder(method, class_data):
 	random.shuffle(abilities)
 	return pick_order + abilities
 
-def outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores):
+def outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores, skills):
 	print("{} {} {}".format(subrace_choice.value, race_choice.value, class_choice.value))
 	outputLineBreak()
 	print("{}: \t{} ({})".format(Abilities.STR.value, ability_scores[0], calculateModifier(ability_scores[0])))
@@ -134,6 +135,8 @@ def outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_
 	print(listToTabbedString(class_data["weapon_proficiencies"], 2))
 	print("Armour:")
 	print(listToTabbedString(class_data["armour_proficiencies"], 2))
+	print("Skills:")
+	print(listToTabbedString([s.value for s in skills], 2))
 
 def listToTabbedString(l, numTabs):
 	s = ""

@@ -120,7 +120,14 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 							"medium",
 					 							"shields"},
 					 "saving_throws"		: { Abilities.STR,
-											  	Abilities.CON}},
+											  	Abilities.CON},
+					 "skills"				: { Skills.ANIMAL,
+					  							Skills.ATHLETICS,
+					  							Skills.INTIMIDATION,
+					  							Skills.NATURE,
+					  							Skills.PERCEPTION,
+					  							Skills.SURVIVAL},
+					 "num_skills"			: 2},
 	
 					Classes.BARD:
 					{"hit_die"				: 8,
@@ -133,7 +140,9 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 							"shortswords"},
 					 "armour_proficiencies" : { "light"},
 					 "saving_throws"		: { Abilities.CHA,
-											  	Abilities.DEX}},
+											  	Abilities.DEX},
+					 "skills"				: { s for s in Skills},
+					 "num_skills"			: 3},
 
 					Classes.CLERIC:
 					{"hit_die"				: 8,
@@ -144,7 +153,14 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 							"medium",
 					 							"shields"},
 					 "saving_throws"		: { Abilities.WIS,
-											  	Abilities.CHA}},
+											  	Abilities.CHA},
+					 "skills"				: { Skills.HISTORY,
+					 							Skills.INSIGHT,
+					 							Skills.MEDICINE,
+					 							Skills.PERSUASION,
+					 							Skills.RELIGION},
+					 "num_skills"			: 2},
+
 					Classes.DRUID:
 					{"hit_die"				: 8,
 					 "prim_att"				: Abilities.WIS,
@@ -163,7 +179,15 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 							"medium",
 					 							"shields"},
 					 "saving_throws"		: { Abilities.INT,
-											  	Abilities.WIS}}}
+											  	Abilities.WIS},
+					 "skills"				: { Skills.ANIMAL,
+					 							Skills.INSIGHT,
+					 							Skills.MEDICINE,
+					 							Skills.NATURE,
+					 							Skills.RELIGION,
+					 							Skills.PERCEPTION,
+					 							Skills.SURVIVAL},
+					 "num_skills"			: 2 }}
 
 race_data_dict	= { Races.DWARF:
 					{"languages"			: { "Common",
