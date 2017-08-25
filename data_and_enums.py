@@ -27,6 +27,10 @@ class Subraces(Enum):
 	HIGH		= "High"
 	WOOD		= "Wood"
 	DARK		= "Dark"
+	LIGHTFOOT 	= "LightFoot"
+	STOUT		= "Stout"
+	FOREST  	= "Forest"
+	ROCK		= "Rock"
 
 class Classes(Enum):
 	BARBARIAN	= "Barbarian"
@@ -190,20 +194,79 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 "num_skills"			: 2 }}
 
 race_data_dict	= { Races.DWARF:
-					{"languages"			: { "Common",
-												"Dwarvish"},
-					 "speed"				: 25,
-					 "ability_increases"	: { Abilities.CON : 2},
-					 "subraces"				: { Subraces.HILL,
-					 							Subraces.MOUNTAIN}},
+						{"languages"			: { "Common",
+													"Dwarvish"},
+						 "speed"				: 25,
+						 "ability_increases"	: { Abilities.CON : 2},
+						 "subraces"				: { Subraces.HILL,
+						 							Subraces.MOUNTAIN}},
 					Races.ELF:
-					{"languages"			: { "Common",
-												"Elvish"},
-					 "speed"				: 30,
-					 "ability_increases"	: { Abilities.DEX : 2},
-					 "subraces"				: { Subraces.WOOD,
-					 							Subraces.HIGH,
-					 							Subraces.DARK}}}
+						{"languages"			: { "Common",
+													"Elvish"},
+						 "speed"				: 30,
+						 "ability_increases"	: { Abilities.DEX : 2},
+						 "subraces"				: { Subraces.WOOD,
+						 							Subraces.HIGH,
+						 							Subraces.DARK}},
+					Races.HALFLING:
+						{"languages"			: { "Common",
+													"Halfling"},
+						 "speed"				: 25,
+						 "ability_increases"	: { Abilities.DEX : 2},
+						 "subraces"				: { Subraces.STOUT,
+						 							Subraces.LIGHTFOOT}},
+	
+					Races.HUMAN:
+						{"languages"			: { "Common"},
+						 "optional_languages"	: {},
+						 "speed"				: 30,
+						 "ability_increases"	: { Abilities.STR : 1,
+						 							Abilities.DEX : 1,
+						 							Abilities.CON : 1,
+						 							Abilities.INT : 1,
+						 							Abilities.WIS : 1,
+						 							Abilities.CHA : 1},
+						 "subraces"				: {}},
+	
+					Races.DRAGONBORN:
+						{"languages"			: { "Common",
+													"Draconic"},
+						 "speed"				: 30,
+						 "ability_increases"	: { Abilities.STR : 2,
+						 							Abilities.CHA : 1},
+						 "subraces"				: {}},
+	
+					Races.GNOME:
+						{"languages"			: { "Common",
+													"Gnomish"},
+						 "speed"				: 25,
+						 "ability_increases"	: { Abilities.INT : 2},
+						 "subraces"				: { Subraces.FOREST,
+						 							Subraces.ROCK}},
+	
+					Races.HALF_ELF:
+						{"languages"			: { "Common",
+													"Elvish"},
+						 "optional_languages"	: {},
+						 "speed"				: 30,
+						 "ability_increases"	: { Abilities.CHA : 2},
+						 "subraces"				: {}},
+	
+					Races.HALF_ORC:
+						{"languages"			: { "Common",
+													"Orc"},
+						 "speed"				: 30,
+						 "ability_increases"	: { Abilities.CON : 1,
+						 							Abilities.STR : 2},
+						 "subraces"				: {}},
+	
+					Races.TIEFLING:
+						{"languages"			: { "Common",
+													"Infernal"},
+						 "speed"				: 30,
+						 "ability_increases"	: { Abilities.CHA : 2,
+						 							Abilities.INT : 1},
+						 "subraces"				: {}}}
 
 subrace_data_dict = { Subraces.HILL:
 						{"ability_increases"	: {Abilities.WIS : 1}
@@ -219,4 +282,16 @@ subrace_data_dict = { Subraces.HILL:
 					  	{"ability_increases"	: {Abilities.WIS : 1}},
 
 					  Subraces.DARK:
-					  	{"ability_increases"	: {Abilities.CHA : 1}}}
+					  	{"ability_increases"	: {Abilities.CHA : 1}},
+
+					  Subraces.LIGHTFOOT:
+					  	{"ability_increases"	: {Abilities.CHA : 1}},
+
+					  Subraces.STOUT:
+					  	{"ability_increases"	: {Abilities.CON : 1}},
+
+					  Subraces.FOREST:
+					  	{"ability_increases"	:{ Abilities.DEX : 1}},
+
+					  Subraces.ROCK:
+					  	{"ability_increases"	:{ Abilities.CON : 1}}}

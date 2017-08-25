@@ -13,18 +13,25 @@ def generateCharacter(races, classes, subraces = "all",
 	else:
 		applicable_subraces = race_data_dict[race_choice]["subraces"]
 		sr = [subrace for subrace in applicable_subraces if subrace in subraces]
-		subrace_choice = random.sample(sr, 1)[0]	
+
+		if sr:
+			subrace_choice = random.sample(sr, 1)[0]
+		else:
+			subrace_choice = None
 
 	class_data = class_data_dict[class_choice]
 	race_data = race_data_dict[race_choice]
-	subrace_data = subrace_data_dict[subrace_choice]
+	if subrace_choice:
+		subrace_data = subrace_data_dict[subrace_choice]
 
 	pick_order = getPickOrder(abilityScoreOrder, class_data)
 
 	(strength, dexterity, constitution, intelligence, wisdom, charisma) = rollAbilityScores(abilityScoreOrderMethod, abilityRollMethod, preference_order = pick_order)
 	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
 	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
-	ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
+
+	if subrace_choice:
+		ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
 	skills = random.sample(class_data["skills"], class_data["num_skills"])
 	outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores, skills)
 
@@ -114,7 +121,10 @@ def getPickOrder(method, class_data):
 	return pick_order + abilities
 
 def outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores, skills):
-	print("{} {} {}".format(subrace_choice.value, race_choice.value, class_choice.value))
+	if subrace_choice:
+		print("{} {} {}".format(subrace_choice.value, race_choice.value, class_choice.value))
+	else:
+		print("{} {}".format(race_choice.value, class_choice.value))
 	outputLineBreak()
 	print("{}: \t{} ({})".format(Abilities.STR.value, ability_scores[0], calculateModifier(ability_scores[0])))
 	print("{}: \t{} ({})".format(Abilities.DEX.value, ability_scores[1], calculateModifier(ability_scores[1])))
@@ -167,3 +177,4 @@ generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, abilityRollMethod = Abilit
 outputLineBreak()
 outputLineBreak()
 generateCharacter({Races.ELF}, {Classes.BARD}, {Subraces.DARK, Subraces.HIGH})
+generateCharacter({r for r  in Races}, {c for c in class_data_dict.keys()}, {sr for sr in Subraces})
