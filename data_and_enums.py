@@ -15,7 +15,7 @@ class Races(Enum):
 	ELF			= "Elf"
 	HALFLING	= "Halfling"
 	HUMAN		= "Human"
-	DRAGONBORN	= "DragonBorn"
+	DRAGONBORN	= "Dragonborn"
 	GNOME		= "Gnome"
 	HALF_ELF	= "Half-elf"
 	HALF_ORC	= "Half-orc"
@@ -27,7 +27,7 @@ class Subraces(Enum):
 	HIGH		= "High"
 	WOOD		= "Wood"
 	DARK		= "Dark"
-	LIGHTFOOT 	= "LightFoot"
+	LIGHTFOOT 	= "Lightfoot"
 	STOUT		= "Stout"
 	FOREST  	= "Forest"
 	ROCK		= "Rock"
@@ -191,6 +191,160 @@ class_data_dict	= {	Classes.BARBARIAN:
 					 							Skills.RELIGION,
 					 							Skills.PERCEPTION,
 					 							Skills.SURVIVAL},
+					 "num_skills"			: 2 },
+
+					Classes.FIGHTER:
+					{"hit_die"				: 10,
+					 "prim_att"				: Abilities.STR,
+	 				 "sec_att"				: Abilities.CON,
+					 "weapon_proficiencies" : { "all"},
+					 "armour_proficiencies" : { "all",
+					 							"shields"},
+					 "saving_throws"		: { Abilities.STR,
+											  	Abilities.CON},
+					 "skills"				: { Skills.ACROBATICS,
+					 							Skills.ANIMAL,
+					 							Skills.ATHLETICS,
+					 							Skills.HISTORY,
+					 							Skills.INSIGHT,
+					 							Skills.INTIMIDATION,
+					 							Skills.PERCEPTION,
+					 							Skills.SURVIVAL},
+					 "num_skills"			: 2 },
+
+					Classes.MONK:
+					{"hit_die"				: 8,
+					 "prim_att"				: Abilities.DEX,
+	 				 "sec_att"				: Abilities.WIS,
+					 "weapon_proficiencies" : { "simple",
+					 							"shortswords"},
+					 "armour_proficiencies" : { },
+					 "saving_throws"		: { Abilities.STR,
+											  	Abilities.DEX},
+					 "skills"				: { Skills.ACROBATICS,
+					 							Skills.ATHLETICS,
+					 							Skills.HISTORY,
+					 							Skills.RELIGION,
+					 							Skills.STEALTH},
+					 "num_skills"			: 2 },
+
+					Classes.PALADIN:
+					{"hit_die"				: 10,
+					 "prim_att"				: Abilities.STR,
+	 				 "sec_att"				: Abilities.CHA,
+					 "weapon_proficiencies" : { "all"},
+					 "armour_proficiencies" : { "all",
+					 							"shields"},
+					 "saving_throws"		: { Abilities.WIS,
+											  	Abilities.CHA},
+					 "skills"				: { Skills.ATHLETICS,
+												Skills.INSIGHT,
+												Skills.INTIMIDATION,
+												Skills.MEDICINE,
+					 							Skills.PERSUASION,
+					 							Skills.RELIGION},
+					 "num_skills"			: 2 },
+
+					Classes.RANGER:
+					{"hit_die"				: 10,
+					 "prim_att"				: Abilities.DEX,
+	 				 "sec_att"				: Abilities.WIS,
+					 "weapon_proficiencies" : { "all"},
+					 "armour_proficiencies" : { "light",
+					 							"medium",
+					 							"shields"},
+					 "saving_throws"		: { Abilities.STR,
+											  	Abilities.DEX},
+					 "skills"				: { Skills.ANIMAL,
+												Skills.ATHLETICS,
+												Skills.INSIGHT,
+												Skills.INVESTIGATION,
+												Skills.NATURE,
+					 							Skills.PERCEPTION,
+					 							Skills.STEALTH,
+					 							Skills.SURVIVAL},
+					 "num_skills"			: 3 },
+
+					Classes.ROGUE:
+					{"hit_die"				: 8,
+					 "prim_att"				: Abilities.DEX,
+	 				 "sec_att"				: Abilities.CHA,
+					 "weapon_proficiencies" : { "simple",
+					 							"hand crossbows",
+					 							"longswords",
+					 							"rapiers",
+					 							"shortswords"},
+					 "armour_proficiencies" : { "light"},
+					 "saving_throws"		: { Abilities.INT,
+											  	Abilities.DEX},
+					 "skills"				: { Skills.ACROBATICS,
+												Skills.ATHLETICS,
+												Skills.DECEPTION,
+												Skills.INSIGHT,
+												Skills.INTIMIDATION,
+												Skills.INVESTIGATION,
+					 							Skills.PERCEPTION,
+												Skills.PERFORMANCE,
+												Skills.PERSUASION,
+					 							Skills.SLEIGHT,
+					 							Skills.STEALTH},
+					 "num_skills"			: 4 },
+
+					Classes.SORCERER:
+					{"hit_die"				: 6,
+					 "prim_att"				: Abilities.CHA,
+	 				 "sec_att"				: Abilities.CON,
+					 "weapon_proficiencies" : { "daggers",
+					 							"darts",
+					 							"slings",
+					 							"quarterstaffs",
+					 							"light crossbows"},
+					 "armour_proficiencies" : { },
+					 "saving_throws"		: { Abilities.CON,
+											  	Abilities.CHA},
+					 "skills"				: { Skills.ARCANA,
+												Skills.DECEPTION,
+												Skills.INSIGHT,
+												Skills.INTIMIDATION,
+												Skills.PERSUASION,
+					 							Skills.RELIGION},
+					 "num_skills"			: 2 },
+
+					Classes.WARLOCK:
+					{"hit_die"				: 8,
+					 "prim_att"				: Abilities.CHA,
+	 				 "sec_att"				: Abilities.CON,
+					 "weapon_proficiencies" : { "simple"},
+					 "armour_proficiencies" : { "light"},
+					 "saving_throws"		: { Abilities.WIS,
+											  	Abilities.CHA},
+					 "skills"				: { Skills.ARCANA,
+												Skills.DECEPTION,
+												Skills.HISTORY,
+												Skills.INTIMIDATION,
+												Skills.INVESTIGATION,
+												Skills.NATURE,
+					 							Skills.RELIGION},
+					 "num_skills"			: 2 },
+
+					Classes.WIZARD:
+					{"hit_die"				: 6,
+					 "prim_att"				: Abilities.INT,
+	 				 "sec_att"				: Abilities.CON,
+					 "weapon_proficiencies" : { "daggers",
+					 							"darts",
+					 							"slings",
+					 							"quarterstaffs",
+					 							"light crossbows"},
+					 "armour_proficiencies" : { },
+					 "saving_throws"		: { Abilities.INT,
+											  	Abilities.WIS},
+					 "skills"				: { Skills.ARCANA,
+												Skills.HISTORY,
+												Skills.INSIGHT,
+												Skills.INVESTIGATION,
+												Skills.MEDICINE,
+					 							Skills.RELIGION},
 					 "num_skills"			: 2 }}
 
 race_data_dict	= { Races.DWARF:
