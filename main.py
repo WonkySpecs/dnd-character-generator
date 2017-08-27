@@ -1,4 +1,5 @@
 import random
+from character import Character
 from data_and_enums import *
 
 def generateCharacter(races, classes, subraces = "all",
@@ -19,21 +20,20 @@ def generateCharacter(races, classes, subraces = "all",
 		else:
 			subrace_choice = None
 
-	class_data = class_data_dict[class_choice]
-	race_data = race_data_dict[race_choice]
-	if subrace_choice:
-		subrace_data = subrace_data_dict[subrace_choice]
+	char = Character(race_choice, class_choice, subrace_choice)
 
-	pick_order = getPickOrder(abilityScoreOrder, class_data)
+	pick_order = getPickOrder(abilityScoreOrder, char.class_data)
 
 	(strength, dexterity, constitution, intelligence, wisdom, charisma) = rollAbilityScores(abilityScoreOrderMethod, abilityRollMethod, preference_order = pick_order)
-	ability_scores = (strength, dexterity, constitution, intelligence, wisdom, charisma)
-	ability_scores = applyAbilityIncreases(list(ability_scores), race_data["ability_increases"])
+	char.setAbilityScores(strength, dexterity, constitution, intelligence, wisdom, charisma)
+	char.applyAbilityIncreases(char.race_data["ability_increases"])
 
 	if subrace_choice:
-		ability_scores = applyAbilityIncreases(list(ability_scores), subrace_data["ability_increases"])
-	skills = random.sample(class_data["skills"], class_data["num_skills"])
-	outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores, skills)
+		ability_scores = char.applyAbilityIncreases(char.subrace_data["ability_increases"])
+
+	skills = random.sample(char.class_data["skills"], char.class_data["num_skills"])
+	char.addSkills(skills)
+	char.output()
 
 def rollAbilityScores(method, roll_method, preference_order = None):
 	if method == AbilityRollMethod.IN_ORDER:
@@ -74,33 +74,8 @@ def rollOneAbilityScore(method):
 	else:
 		print("Invalid method passed to rollOneAbilityScore")
 
-def calculateModifier(score):
-	return (score - 10)//2
-
-# Takes list of ints in order of
-# str, dex, con, int, wis, cha
-# and a dict of {Abilities : int} and applies
-# the increases to the appropriate ability
-def applyAbilityIncreases(ability_list, increases):
-	for ability in increases:
-		amount = increases[ability]
-		if ability == Abilities.STR:
-			ability_list[0] += amount
-		elif ability == Abilities.DEX:
-			ability_list[1] += amount
-		elif ability == Abilities.CON:
-			ability_list[2] += amount
-		elif ability == Abilities.INT:
-			ability_list[3] += amount
-		elif ability == Abilities.WIS:
-			ability_list[4] += amount
-		elif ability == Abilities.CHA:
-			ability_list[5] += amount
-
-	return tuple(ability_list)
-
 # Takes either:
-#	1. A strong defining the method for generating or
+#	1. A string defining the method for generating or
 #	2. A list of up to 6 Abilities
 # and outputs a list defining the preference for ability
 # scores, most preffered first.
@@ -120,43 +95,6 @@ def getPickOrder(method, class_data):
 	random.shuffle(abilities)
 	return pick_order + abilities
 
-def outputCharacter(subrace_choice, race_choice, class_choice, race_data, class_data, ability_scores, skills):
-	if subrace_choice:
-		print("{} {} {}".format(subrace_choice.value, race_choice.value, class_choice.value))
-	else:
-		print("{} {}".format(race_choice.value, class_choice.value))
-	outputLineBreak()
-	print("{}: \t{} ({})".format(Abilities.STR.value, ability_scores[0], calculateModifier(ability_scores[0])))
-	print("{}: \t{} ({})".format(Abilities.DEX.value, ability_scores[1], calculateModifier(ability_scores[1])))
-	print("{}: \t{} ({})".format(Abilities.CON.value, ability_scores[2], calculateModifier(ability_scores[2])))
-	print("{}: \t{} ({})".format(Abilities.INT.value, ability_scores[3], calculateModifier(ability_scores[3])))
-	print("{}: \t{} ({})".format(Abilities.WIS.value, ability_scores[4], calculateModifier(ability_scores[4])))
-	print("{}: \t{} ({})".format(Abilities.CHA.value, ability_scores[5], calculateModifier(ability_scores[5])))
-	print("HP: \t\t{}".format(class_data["hit_die"] + calculateModifier(ability_scores[2])))
-	print()
-	print("Speed: \t\t{}".format(race_data["speed"]))
-	print("Languages:")
-	print(listToTabbedString(race_data["languages"], 2))
-	print("Proficiencies")
-	outputLineBreak()
-	print("Saving throws:")
-	print(listToTabbedString([a.value for a in class_data["saving_throws"]], 2))
-	print("Weapons:")
-	print(listToTabbedString(class_data["weapon_proficiencies"], 2))
-	print("Armour:")
-	print(listToTabbedString(class_data["armour_proficiencies"], 2))
-	print("Skills:")
-	print(listToTabbedString([s.value for s in skills], 2))
-
-def listToTabbedString(l, numTabs):
-	s = ""
-	for entry in l:
-		for i in range(numTabs):
-			s += "\t"
-		s += entry
-		s += "\n"
-	return s
-
 def outputLineBreak():
 	print("----------------")
 
@@ -175,6 +113,8 @@ def runTests():
 
 generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, abilityRollMethod = AbilityRollMethod.STANDARD_ARRAY)
 outputLineBreak()
-outputLineBreak()
 generateCharacter({Races.ELF}, {Classes.BARD}, {Subraces.DARK, Subraces.HIGH})
-generateCharacter({r for r  in Races}, {c for c in class_data_dict.keys()}, {sr for sr in Subraces})
+outputLineBreak()
+for i in range(1000):
+	generateCharacter({r for r  in Races}, {c for c in class_data_dict.keys()}, {sr for sr in Subraces})
+	outputLineBreak()

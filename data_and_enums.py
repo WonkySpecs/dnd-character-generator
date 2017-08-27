@@ -115,6 +115,23 @@ simple_ranged_weapons = { "Light crossbow",
 						  "Shortbow",
 						  "Sling"}
 
+language_list = [	"Common",
+					"Elvish",
+					"Dwarvish",
+					"Giant",
+					"Gnomish",
+					"Goblin",
+					"Halfling",
+					"Orc",
+					"Abyssal",
+					"Celestial",
+					"Draconic",
+					"Deep Speech",
+					"Infernal",
+					"Primordial",
+					"Sylvan",
+					"Undercommon"]
+
 class_data_dict	= {	Classes.BARBARIAN:
 					{"hit_die"				: 12,
 					 "prim_att"				: Abilities.CON,
@@ -350,6 +367,7 @@ class_data_dict	= {	Classes.BARBARIAN:
 race_data_dict	= { Races.DWARF:
 						{"languages"			: { "Common",
 													"Dwarvish"},
+						 "extra_language"		: False,
 						 "speed"				: 25,
 						 "ability_increases"	: { Abilities.CON : 2},
 						 "subraces"				: { Subraces.HILL,
@@ -357,6 +375,7 @@ race_data_dict	= { Races.DWARF:
 					Races.ELF:
 						{"languages"			: { "Common",
 													"Elvish"},
+						 "extra_language"		: False,
 						 "speed"				: 30,
 						 "ability_increases"	: { Abilities.DEX : 2},
 						 "subraces"				: { Subraces.WOOD,
@@ -365,6 +384,7 @@ race_data_dict	= { Races.DWARF:
 					Races.HALFLING:
 						{"languages"			: { "Common",
 													"Halfling"},
+						 "extra_language"		: False,
 						 "speed"				: 25,
 						 "ability_increases"	: { Abilities.DEX : 2},
 						 "subraces"				: { Subraces.STOUT,
@@ -372,7 +392,7 @@ race_data_dict	= { Races.DWARF:
 	
 					Races.HUMAN:
 						{"languages"			: { "Common"},
-						 "optional_languages"	: {},
+						 "extra_language"		: True,
 						 "speed"				: 30,
 						 "ability_increases"	: { Abilities.STR : 1,
 						 							Abilities.DEX : 1,
@@ -385,6 +405,7 @@ race_data_dict	= { Races.DWARF:
 					Races.DRAGONBORN:
 						{"languages"			: { "Common",
 													"Draconic"},
+						 "extra_language"		: False,
 						 "speed"				: 30,
 						 "ability_increases"	: { Abilities.STR : 2,
 						 							Abilities.CHA : 1},
@@ -393,6 +414,7 @@ race_data_dict	= { Races.DWARF:
 					Races.GNOME:
 						{"languages"			: { "Common",
 													"Gnomish"},
+						 "extra_language"		: False,
 						 "speed"				: 25,
 						 "ability_increases"	: { Abilities.INT : 2},
 						 "subraces"				: { Subraces.FOREST,
@@ -401,7 +423,7 @@ race_data_dict	= { Races.DWARF:
 					Races.HALF_ELF:
 						{"languages"			: { "Common",
 													"Elvish"},
-						 "optional_languages"	: {},
+						 "extra_language"		: True,
 						 "speed"				: 30,
 						 "ability_increases"	: { Abilities.CHA : 2},
 						 "subraces"				: {}},
@@ -409,6 +431,7 @@ race_data_dict	= { Races.DWARF:
 					Races.HALF_ORC:
 						{"languages"			: { "Common",
 													"Orc"},
+						 "extra_language"		: False,
 						 "speed"				: 30,
 						 "ability_increases"	: { Abilities.CON : 1,
 						 							Abilities.STR : 2},
@@ -417,6 +440,7 @@ race_data_dict	= { Races.DWARF:
 					Races.TIEFLING:
 						{"languages"			: { "Common",
 													"Infernal"},
+						 "extra_language"		: False,
 						 "speed"				: 30,
 						 "ability_increases"	: { Abilities.CHA : 2,
 						 							Abilities.INT : 1},
