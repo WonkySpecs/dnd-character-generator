@@ -1,5 +1,5 @@
 import random
-from character import Character
+from character import Character, calculateModifier
 from data_and_enums import *
 
 def generateCharacter(races, classes, subraces = "all",
@@ -27,7 +27,6 @@ def generateCharacter(races, classes, subraces = "all",
 	(strength, dexterity, constitution, intelligence, wisdom, charisma) = rollAbilityScores(abilityScoreOrderMethod, abilityRollMethod, preference_order = pick_order)
 	char.setAbilityScores(strength, dexterity, constitution, intelligence, wisdom, charisma)
 	char.applyAbilityIncreases(char.race_data["ability_increases"])
-
 	if subrace_choice:
 		ability_scores = char.applyAbilityIncreases(char.subrace_data["ability_increases"])
 
@@ -84,7 +83,7 @@ def getPickOrder(method, class_data):
 		pick_order = [class_data["prim_att"], class_data["sec_att"]]
 	elif method == "random":
 		pick_order = [a for a in Abilities]
-		pick_order.shuffle()
+		random.shuffle(pick_order)
 		return pick_order
 	else:
 		pick_order = method
@@ -103,14 +102,15 @@ def runTests():
 	assert(calculateModifier(3) == -4)
 	assert(calculateModifier(10) == 0)
 	assert(calculateModifier(30) == 10)
-	for i in range(100):
-		assert(rollOneAbilityScore(AbilityRollMethod.FOUR_D6_DROP_LOWEST) in range(3, 18))
-		assert(rollOneAbilityScore(AbilityRollMethod.THREE_D6) in range(3, 18))
-		assert(rollOneAbilityScore(AbilityRollMethod.D20) in range(1, 20))
+	for i in range(1000):
+		assert(rollOneAbilityScore(AbilityRollMethod.FOUR_D6_DROP_LOWEST) in range(3, 19))
+		assert(rollOneAbilityScore(AbilityRollMethod.THREE_D6) in range(3, 19))
+		assert(rollOneAbilityScore(AbilityRollMethod.D20) in range(1, 21))
 	po = getPickOrder("random", None)
 	for ability in Abilities:
 		assert(ability in po)
 
+runTests()
 generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, abilityRollMethod = AbilityRollMethod.STANDARD_ARRAY)
 outputLineBreak()
 generateCharacter({Races.ELF}, {Classes.BARD}, {Subraces.DARK, Subraces.HIGH})
