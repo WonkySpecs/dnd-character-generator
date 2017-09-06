@@ -16,9 +16,13 @@ class GUI(tk.Tk):
 		super(GUI, self).__init__()
 		self.setUpClassSettingFrame()
 		self.setUpRaceSettingFrame()
+		self.setUpAbilityFrame()
+		self.setUpFinalFrame()
 
-		self.class_setting_frame.grid(row = 0, column = 0)
-		self.race_setting_frame.grid(row = 0, column = 1)
+		self.class_setting_frame.grid(row = 0, column = 0, sticky = tk.W  + tk.N)
+		self.race_setting_frame.grid(row = 0, column = 1, sticky = tk.E + tk.N)
+		self.ability_setting_frame.grid(row = 1, column = 0, sticky = tk.W  + tk.S)
+		self.final_setting_frame.grid(row = 1, column = 1, sticky = tk.E + tk.S)
 
 	def setUpClassSettingFrame(self):
 		self.class_setting_frame = tk.LabelFrame(self, text = "Classes")
@@ -66,9 +70,51 @@ class GUI(tk.Tk):
 		self.check_all_racees_button.grid(row = max_rows + 1, column = 0)
 		self.uncheck_all_racees_button.grid(row = max_rows + 1, column = 1)
 
+	def setUpAbilityFrame(self):
+		self.ability_setting_frame = tk.LabelFrame(self, text = "Ability priority")
+
+		self.ability_mode = tk.StringVar()
+		self.ability_mode.set("default")
+		self.ability_mode.trace("w", self.toggleAbilityModeEnabled)
+		modes = [("Class default", "default"),
+					("Custom", "custom")]
+
+		r = 0
+		for text, mode in modes:
+			ability_radiobutton = tk.Radiobutton(self.ability_setting_frame, text = text, variable = self.ability_mode, value = mode)
+			ability_radiobutton.grid(column = 0, row = r, sticky = tk.W)
+			r += 1
+
+		self.ability_var_dict = dict((s, tk.IntVar()) for s in Abilities)
+		self.ability_priority_menus = []
+
+		for ability in Abilities:
+			self.ability_var_dict[ability].set(1)
+			drop_menu = tk.OptionMenu(self.ability_setting_frame, self.ability_var_dict[ability], 1, 2, 3, 4, 5, 6)
+			drop_menu.configure(state = "disabled")
+			self.ability_priority_menus.append(drop_menu)
+			label = tk.Label(self.ability_setting_frame, text = ability.value)
+			label.grid(column = 0, row = r)
+			drop_menu.grid(column = 1, row = r, sticky = tk.E)
+			r += 1
+
+	def setUpFinalFrame(self):
+		self.final_setting_frame = tk.Frame(self)
+		self.unrestricted_char_button = tk.Button(self.final_setting_frame, text = "Create unrestricted character")
+		self.restricted_char_button = tk.Button(self.final_setting_frame, text = "Create \"sensible\" character")
+		self.unrestricted_char_button.grid(column = 0, row = 0)
+		self.restricted_char_button.grid(column = 0, row = 1)
+
+	def toggleAbilityModeEnabled(self, *args):
+		if self.ability_mode.get() == "default":
+			for menu in self.ability_priority_menus:
+				menu.configure(state = "disabled")
+		else:
+			for menu in self.ability_priority_menus:
+				menu.configure(state = "active")
 
 
+if __name__ == "__main__":
+	root = GUI()
 
-root = GUI()
-
-root.mainloop()
+	root.mainloop()
