@@ -1,10 +1,11 @@
 import tkinter as tk
+import random
+import main
 from tkinter import ttk
 from math import ceil
 from data_and_enums import *
 
 def setAllChecks(frame, value):
-	print(value)
 	for widget in frame.winfo_children():
 		if widget.winfo_class() == "Checkbutton":
 			if value == True:
@@ -121,10 +122,57 @@ class GUI(tk.Tk):
 				menu.configure(state = "active")
 
 	def collectOptionsAndCreateCharacter(self, mode):
-		print(mode)
+		selected_races = {r for r in Races if self.race_boolean_var_dict[r].get()}
+		selected_classes = {c for c in Classes if self.class_boolean_var_dict[c].get()}
+
+		if selected_classes == None or selected_races == None:
+			pass
+		
+		if mode == "unrestricted":
+			valid_races = selected_races
+			valid_classes = selected_classes
+			valid_subraces = "all"
+		else:
+			class_choice = random.sample(selected_classes, 1)[0]
+			valid_classes = {class_choice}
+			desired_abilities = [class_data_dict[class_choice]["prim_att"], class_data_dict[class_choice]["sec_att"]]
+
+			valid_races = set()
+			valid_subraces = set()
+
+			#If race gives useful ability score increase, include in race choices along with all subraces
+			for race in selected_races:
+				for abi in race_data_dict[race]["ability_increases"].keys():
+					if abi in desired_abilities:
+						valid_races.add(race)
+						valid_subraces.update(race_data_dict[race]["subraces"])
+						break
+
+				#Even if race does not give useful abilities, subrace might.
+				#If so, add the race along with only the useful subraces
+				if race not in valid_races:
+					for subrace in race_data_dict[race]["subraces"]:
+						for abi in subrace_data_dict[subrace]["ability_increases"]:
+							if abi in desired_abilities:
+								if race not in valid_races:
+									valid_races.add(race)
+								valid_subraces.add(subrace)
+
+
+		char = main.generateCharacter(valid_races, valid_classes, valid_subraces, abilityRollMethod = AbilityRollMethod.FOUR_D6_DROP_LOWEST)
+		self.outputChar(char)
+
+	def outputChar(self, char):
+		output_window = tk.Tk()
+
+		char_text_message = tk.Message(output_window, text = char.toString())
+		char_text_message.pack()
+
+		output_window.mainloop()
 
 
 if __name__ == "__main__":
+	print("gui.py called as main")
 	root = GUI()
 
 	root.mainloop()

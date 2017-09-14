@@ -63,33 +63,34 @@ class Character:
 	def addSkills(self, new_skills):
 		self.skills +=new_skills
 
-	def output(self):
+	def toString(self):
+		s = ""
 		if self.subrace:
-			print("{} {} {}".format(self.subrace.value, self.char_race.value, self.char_class.value))
+			s += "{} {} {}".format(self.subrace.value, self.char_race.value, self.char_class.value) + "\n"
 		else:
-			print("{} {}".format(self.char_race.value, self.char_class.value))
-		outputLineBreak()
-		print("{}: \t{} ({})".format(Abilities.STR.value, self.str, calculateModifier(self.str)))
-		print("{}: \t{} ({})".format(Abilities.DEX.value, self.dex, calculateModifier(self.dex)))
-		print("{}: \t{} ({})".format(Abilities.CON.value, self.con, calculateModifier(self.con)))
-		print("{}: \t{} ({})".format(Abilities.INT.value, self.int, calculateModifier(self.int)))
-		print("{}: \t{} ({})".format(Abilities.WIS.value, self.wis, calculateModifier(self.wis)))
-		print("{}: \t{} ({})".format(Abilities.CHA.value, self.cha, calculateModifier(self.cha)))
-		print("HP: \t\t{}".format(self.class_data["hit_die"] + calculateModifier(self.con)))
-		print()
-		print("Speed: \t\t{}".format(self.race_data["speed"]))
-		print("Languages:")
-		print(listToTabbedString(self.languages, 2))
-		print("Proficiencies")
-		outputLineBreak()
-		print("Saving throws:")
-		print(listToTabbedString([a.value for a in self.class_data["saving_throws"]], 2))
-		print("Weapons:")
-		print(listToTabbedString(self.class_data["weapon_proficiencies"], 2))
-		print("Armour:")
-		print(listToTabbedString(self.class_data["armour_proficiencies"], 2))
-		print("Skills:")
-		print(listToTabbedString([s.value for s in self.skills], 2))
+			s += "{} {}".format(self.char_race.value, self.char_class.value) + "\n"
+		s += "{}: \t{} ({})".format(Abilities.STR.value, self.str, calculateModifier(self.str)) + "\n"
+		s += "{}: \t{} ({})".format(Abilities.DEX.value, self.dex, calculateModifier(self.dex)) + "\n"
+		s += "{}: \t{} ({})".format(Abilities.CON.value, self.con, calculateModifier(self.con)) + "\n"
+		s += "{}: \t{} ({})".format(Abilities.INT.value, self.int, calculateModifier(self.int)) + "\n"
+		s += "{}: \t{} ({})".format(Abilities.WIS.value, self.wis, calculateModifier(self.wis)) + "\n"
+		s += "{}: \t{} ({})".format(Abilities.CHA.value, self.cha, calculateModifier(self.cha)) + "\n"
+		s += "HP: \t\t{}".format(self.class_data["hit_die"] + calculateModifier(self.con)) + "\n"
+		s +=  "\n"
+		s += "Speed: \t\t{}".format(self.race_data["speed"]) + "\n"
+		s += "Languages:" + "\n"
+		s += listToTabbedString(self.languages, 2) + "\n"
+		s += "Proficiencies" + "\n"
+		s += "Saving throws:" + "\n"
+		s += listToTabbedString([a.value for a in self.class_data["saving_throws"]], 2) + "\n"
+		s += "Weapons:" + "\n"
+		s += listToTabbedString(self.class_data["weapon_proficiencies"], 2) + "\n"
+		s += "Armour:" + "\n"
+		s += listToTabbedString(self.class_data["armour_proficiencies"], 2) + "\n"
+		s += "Skills:" + "\n"
+		s += listToTabbedString([s.value for s in self.skills], 2) + "\n"
+
+		return s
 
 def calculateModifier(score):
 	return (score - 10)//2
@@ -102,6 +103,3 @@ def listToTabbedString(l, numTabs):
 		s += entry
 		s += "\n"
 	return s
-
-def outputLineBreak():
-	print("----------------")

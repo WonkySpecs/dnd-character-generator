@@ -1,4 +1,5 @@
 import random
+import gui
 from character import Character, calculateModifier
 from data_and_enums import *
 
@@ -6,11 +7,15 @@ def generateCharacter(races, classes, subraces = "all",
 						abilityScoreOrderMethod = AbilityRollMethod.PICK_ORDER,
 						abilityRollMethod = AbilityRollMethod.FOUR_D6_DROP_LOWEST,
 						abilityScoreOrder = "classic"):
+
 	race_choice = random.sample(races, 1)[0]
 	class_choice = random.sample(classes, 1)[0]
 
 	if(subraces == "all"):
-		subrace_choice = random.sample(race_data_dict[race_choice]["subraces"], 1)[0]
+		if race_data_dict[race_choice]["subraces"]:
+			subrace_choice = random.sample(race_data_dict[race_choice]["subraces"], 1)[0]
+		else:
+			subrace_choice = None
 	else:
 		applicable_subraces = race_data_dict[race_choice]["subraces"]
 		sr = [subrace for subrace in applicable_subraces if subrace in subraces]
@@ -32,7 +37,7 @@ def generateCharacter(races, classes, subraces = "all",
 
 	skills = random.sample(char.class_data["skills"], char.class_data["num_skills"])
 	char.addSkills(skills)
-	char.output()
+	return char
 
 def rollAbilityScores(method, roll_method, preference_order = None):
 	if method == AbilityRollMethod.IN_ORDER:
@@ -110,11 +115,8 @@ def runTests():
 	for ability in Abilities:
 		assert(ability in po)
 
-runTests()
-generateCharacter({Races.DWARF}, {Classes.BARBARIAN}, abilityRollMethod = AbilityRollMethod.STANDARD_ARRAY)
-outputLineBreak()
-generateCharacter({Races.ELF}, {Classes.BARD}, {Subraces.DARK, Subraces.HIGH})
-outputLineBreak()
-for i in range(1000):
-	generateCharacter({r for r  in Races}, {c for c in class_data_dict.keys()}, {sr for sr in Subraces})
-	outputLineBreak()
+if __name__ == "__main__":
+	runTests()
+	root = gui.GUI()
+
+	root.mainloop()
